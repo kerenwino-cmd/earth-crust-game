@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>קרום יבשתי או אוקייני? – משחק מיון</title>
+<style>
+:root{font-family:Arial,'Noto Sans Hebrew',sans-serif;color:#20334b;background:#eaf5fb}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 7% 0%,#d9f1e8,transparent 45%),linear-gradient(140deg,#eaf4ff,#eafaf2);padding:20px}.wrap{max-width:1000px;margin:auto}header{text-align:center;margin-bottom:20px}h1{font-size:clamp(26px,4vw,42px);margin:7px 0}.intro{margin:0;color:#53667b;line-height:1.65}.label{font-weight:800;color:#167b8f;letter-spacing:.2px}.progress{max-width:480px;background:#cbdfe8;height:12px;border-radius:30px;margin:17px auto 6px;overflow:hidden}.bar{height:100%;background:#15a594;width:0;transition:width .3s}.counter{font-size:14px;color:#53677a}.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}.zone{background:#fff;border:3px dashed #bed3df;border-radius:20px;min-height:300px;padding:16px;transition:.2s}.zone[data-type="land"]{border-color:#bf9b61;background:#fffaf1}.zone[data-type="ocean"]{border-color:#60b6d5;background:#f2faff}.zone h2{margin:0 0 6px;font-size:23px}.zone small{color:#66798c}.zone .emoji{font-size:32px;display:block;margin-bottom:6px}.drop{min-height:160px;display:flex;flex-wrap:wrap;gap:9px;align-content:start;padding-top:17px}.chip{padding:12px 15px;border-radius:12px;border:2px solid #d8e2eb;background:#fff;box-shadow:0 2px 6px #243a4d12;cursor:pointer;font-size:16px;font-weight:700;text-align:center;transition:transform .12s,background .12s}.chip:hover{transform:translateY(-2px)}.chip:focus-visible,button:focus-visible{outline:4px solid #ffb93b;outline-offset:3px}.chip.selected{background:#fff1c3;border-color:#e6ae32}.chip.correct{border-color:#16a075;background:#e0fff2}.chip.wrong{border-color:#e65f69;background:#ffe8ea}.pool{background:#fff;border-radius:20px;padding:18px;margin-top:16px;box-shadow:0 6px 22px #213c5412}.pool h2{font-size:19px;margin:0 0 6px}.items{display:flex;gap:10px;flex-wrap:wrap;min-height:65px;padding-top:9px}.hint{font-size:14px;color:#697b8b;margin:0 0 10px}footer{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:17px 0}button.action{border:0;border-radius:13px;padding:13px 23px;font-size:17px;font-weight:800;background:#087da3;color:white;cursor:pointer}button.secondary{background:#e4edf3;color:#28455a}.feedback{text-align:center;min-height:32px;font-size:19px;font-weight:800;margin-top:8px}.instructions{font-size:13px;text-align:center;color:#597084;margin-top:6px}.chip[draggable=true]{touch-action:manipulation}@media(max-width:650px){body{padding:12px}.zone{padding:12px;min-height:210px}.zone h2{font-size:19px}.zone .emoji{font-size:27px}.chip{font-size:14px;padding:10px}.drop{min-height:115px}.layout{gap:10px}}
+</style>
+</head><body><main class="wrap">
+<header><div class="label">🌍 משימה גאוגרפית</div><h1>קרום יבשתי או קרום אוקייני?</h1><p class="intro">לכל סוג קרום יש מאפיינים משלו. מיינו את הכרטיסיות לשתי הקבוצות הנכונות!</p><div class="progress"><div class="bar" id="bar"></div></div><div class="counter" id="counter">0 מתוך 10 כרטיסיות מוינו</div></header>
+<div class="layout">
+<section class="zone" data-type="land" aria-label="קרום יבשתי"><span class="emoji">🏔️</span><h2>קרום יבשתי</h2><small>היבשות והשטח היבשתי</small><div class="drop" id="land"></div></section>
+<section class="zone" data-type="ocean" aria-label="קרום אוקייני"><span class="emoji">🌊</span><h2>קרום אוקייני</h2><small>קרקעית האוקיינוסים</small><div class="drop" id="ocean"></div></section>
+</div>
+<section class="pool"><h2>🧩 הכרטיסיות למיון</h2><p class="hint">לחצו על כרטיסייה ואז על הקבוצה המתאימה, או גררו אותה. לחיצה על כרטיסייה ששובצה מחזירה אותה לבחירה.</p><div class="items" id="pool"></div></section>
+<footer><button class="action" id="check">בדיקת התשובות ✓</button><button class="action secondary" id="reset">התחלה מחדש ↻</button></footer><div class="feedback" id="feedback" role="status" aria-live="polite"></div><p class="instructions">המשחק מבוסס על שקופיות 6–8 במצגת ״תהליכים פנימיים של כדור הארץ״.</p>
+</main><script>
+const data=[
+{id:1,t:'נמצא מתחת ליבשות',a:'land'},
+{id:2,t:'עבה יותר',a:'land'},
+{id:3,t:'סלע אופייני: גרניט',a:'land'},
+{id:4,t:'צפיפות נמוכה יותר',a:'land'},
+{id:5,t:'יוצר את פני השטח היבשתיים',a:'land'},
+{id:6,t:'נמצא בקרקעית האוקיינוסים',a:'ocean'},
+{id:7,t:'דק יותר',a:'ocean'},
+{id:8,t:'סלע אופייני: בזלת',a:'ocean'},
+{id:9,t:'צפיפות גבוהה יותר',a:'ocean'},
+{id:10,t:'נמצא מתחת למי האוקיינוס',a:'ocean'}
+];
+let assign={},selected=null,checked=false;
+const el=id=>document.getElementById(id);
+function place(id,target){assign[id]=target;selected=null;checked=false;el('feedback').textContent='';render()}
+function makeChip(card){let b=document.createElement('button');b.className='chip';b.type='button';b.draggable=true;b.textContent=card.t;b.setAttribute('aria-label',card.t);if(selected===card.id)b.classList.add('selected');if(checked&&assign[card.id])b.classList.add(assign[card.id]===card.a?'correct':'wrong');b.onclick=e=>{e.stopPropagation();if(assign[card.id]){delete assign[card.id];selected=null;checked=false;el('feedback').textContent='';render()}else{selected=selected===card.id?null:card.id;render()}};b.addEventListener('dragstart',e=>{selected=card.id;e.dataTransfer.setData('text/plain',String(card.id));e.dataTransfer.effectAllowed='move'});return b}
+function render(){['pool','land','ocean'].forEach(id=>el(id).replaceChildren());data.forEach(card=>{el(assign[card.id]||'pool').appendChild(makeChip(card))});let n=Object.keys(assign).length;el('bar').style.width=(n/10*100)+'%';el('counter').textContent=`${n} מתוך 10 כרטיסיות מוינו`}
+for(const type of ['land','ocean']){let section=document.querySelector(`[data-type=${type}]`);section.addEventListener('click',()=>{if(selected!==null)place(selected,type)});section.addEventListener('dragover',e=>e.preventDefault());section.addEventListener('drop',e=>{e.preventDefault();let id=Number(e.dataTransfer.getData('text/plain'));if(data.some(x=>x.id===id))place(id,type)})}
+el('check').onclick=()=>{let n=Object.keys(assign).length;if(n<10){el('feedback').style.color='#a76513';el('feedback').textContent=`נשארו עוד ${10-n} כרטיסיות למיון`;return}checked=true;render();let score=data.filter(c=>assign[c.id]===c.a).length;let out=el('feedback');out.style.color=score===10?'#138b68':'#b24d52';out.textContent=score===10?'🎉 כל הכבוד! זיהיתם נכון את כל ההבדלים!':`זיהיתם נכון ${score} מתוך 10. הכרטיסיות באדום דורשות תיקון.`};
+el('reset').onclick=()=>{assign={};selected=null;checked=false;el('feedback').textContent='';render()};render();
+</script></body></html>
